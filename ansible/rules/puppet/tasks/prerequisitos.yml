@@ -1,0 +1,11 @@
+- name: Baixar repo puppet - Debian
+  get_url:
+    url: https://apt.puppetlabs.com/puppet5-release-xenial.deb
+    dest: /opt/
+  when: ansible_os_family == "Debian"
+
+- name: Baixar repo puppet - Redhat
+  get_url:
+    url: https://yum.puppet.com/puppet5/puppet5-release-el-7.noarch.rpm
+    dest: /opt/
+  when: ansible_os_family == "RedHat"

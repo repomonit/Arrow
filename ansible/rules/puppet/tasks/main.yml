@@ -1,0 +1,8 @@
+---
+# tasks file for puppet
+- name: Puppet install repo and agent
+  hosts: devops docker automation
+  tasks:
+  - include: prerequisitos.yml
+  - include: install_puppet_debian.yml
+  - include: install_puppet_redhat.yml

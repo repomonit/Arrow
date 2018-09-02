@@ -1,0 +1,11 @@
+---
+# tasks file for marvin
+- name: Garantindo a estrutura web
+  hosts: devops docker automation
+  vars:
+  - texto: "Deploy ok teste 2"
+  tasks:
+  - include: prerequisitos.yml
+  - include: install_apache.yml
+  - include: install_httpd.yml
+  - include: deploy.yml

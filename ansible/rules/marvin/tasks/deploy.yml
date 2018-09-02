@@ -1,0 +1,9 @@
+- name: Criando a pagina no apache
+  template:
+    src: ../templates/index.html
+    dest: /var/www/html/index.html
+
+- name: Baixar uma imagem
+  get_url:
+    url: https://upload.wikimedia.org/wikipedia/en/thumb/d/d5/Marvin_the_Martian.svg/1200px-Marvin_the_Martian.svg.png
+    dest: /var/www/html/marvin.jpg 

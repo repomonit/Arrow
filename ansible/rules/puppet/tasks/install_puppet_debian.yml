@@ -1,0 +1,8 @@
+- name: Instalar repo puppet - Debian
+  apt:
+    deb: /opt/puppet5-release-xenial.deb
+  when: ansible_os_family == "Debian"
+
+- name: Instalar agent
+  apt: name=puppet-agent state=present update_cache=yes
+  when: ansible_os_family == "Debian"

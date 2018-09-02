@@ -1,0 +1,85 @@
+---
+- name: Testando o Ansible
+  hosts: docker devops automation
+  tasks:
+
+#  - name: Criar usuario
+#    user: name={{ username }} shell=/bin/bash create_home=yes
+
+  - name: Instalando pacotes
+    yum:
+      name: "{{ item }}"
+      state: present
+      update_cache: yes
+    with_items:
+    - "epel-release"
+    when: ansible_distribution == "CentOS"
+
+  - name: Instalando pacotes
+    apt:
+      name: "{{ item }}"
+      state: present
+      update_cache: yes
+    with_items:
+    - "cowsay"
+    - "fortunes-br"
+    - "figlet"
+    when: ansible_distribution == "Ubuntu"
+
+  - name: Instalando pacotes
+    yum:
+      name: "{{ item }}"
+      state: present
+      update_cache: yes
+    with_items:
+    - "cowsay"
+    - "figlet"
+    when: ansible_distribution == "CentOS"
+
+  - name: Garantir DNS local
+    lineinfile:
+      path: /etc/hosts
+      line: "{{ item }}"
+    with_items:
+    -  "192.168.99.10 devops.salas4linux.com.br devops"
+    -  "192.168.99.20 docker.salas4linux.com.br docker"
+    -  "192.168.99.30 automation.salas4linux.com.br automation"
+
+  - name: Garantindo a variavel PATH
+    lineinfile:
+      path: /etc/profile
+      line: "export PATH=$PATH:/usr/games"
+      state: present
+
+  - name: Verificando a memoria
+    command: free -h
+
+  - name: Instalando o pacote sl
+    apt: name=sl state=absent update_cache=yes
+    when: ansible_distribution == "Ubuntu"
+
+  - name: Movendo arquivos
+    copy:
+      src: lanterna_verde
+      dest: /tmp/lanterna_verde
+
+  - name: Movendo arquivos bashrc
+    copy:
+      src: /root/bashrc
+      dest: /root/.bashrc
+
+  - name: Instalando o pacote nginx
+    apt: name=nginx state=present update_cache=yes
+    notify: restart
+    when: ansible_distribution == "Ubuntu"
+
+  - name: Instalando o pacote nginx
+    yum: name=nginx state=present update_cache=yes
+    notify: restart
+    when: ansible_distribution == "CentOS"
+
+  handlers:
+  - name: restart
+    service:
+      name: nginx
+      state: restarted

@@ -1,0 +1,9 @@
+- name: Instalar repo puppet - RedHat
+  yum:
+    name: /opt/puppet5-release-el-7.noarch.rpm
+    state: present
+  when: ansible_os_family == "RedHat"
+
+- name: Instalar agent
+  yum: name=puppet-agent state=present
+  when: ansible_os_family == "RedHat"
